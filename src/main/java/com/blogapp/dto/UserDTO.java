@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 public class UserDTO {
 
-    @Nullable
     private Integer id;
 
     private String username;

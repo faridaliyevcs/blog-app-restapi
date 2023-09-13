@@ -21,7 +21,7 @@ public class QuestionServiceImpl implements QuestionServiceInter {
 
     @Override
     public Question getQuestionById(int id) {
-        return questionRepository.findById(id);
+        return questionRepository.getById(id);
     }
 
     @Override

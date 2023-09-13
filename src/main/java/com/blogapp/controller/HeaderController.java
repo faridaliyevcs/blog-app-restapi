@@ -9,6 +9,7 @@ import com.blogapp.service.impl.EntryServiceImpl;
 import com.blogapp.service.impl.HeaderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -31,23 +32,27 @@ public class HeaderController {
     private EntryServiceImpl entryService;
 
     @PostMapping("/header")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<HeaderDTO> createHeader(@RequestBody HeaderDTO headerDTO){
         headerService.updateHeader(headerDTOConverter.getHeaderFromHeaderDTO(headerDTO));
         return ResponseEntity.ok(headerDTO);
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<HeaderDTO>> getAllHeaders() {
         return ResponseEntity.ok(headerDTOConverter.getListOfHeaderDTOFromListOfHeader(headerService.getAllHeader()));
 
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<HeaderDTO> getHeader(@PathVariable(name = "id") Integer id) {
             return ResponseEntity.ok(headerDTOConverter.getHeaderDTOFromHeader(headerService.getHeaderById(id)));
     }
 
     @PostMapping("/{id}/entry")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<EntryDTO> createEntry(@RequestBody EntryDTO entryDTO,
                                                 @PathVariable(name = "id") Integer id) {
         entryDTO.setHeader(headerDTOConverter.getHeaderDTOFromHeader(headerService.getHeaderById(id)));
@@ -56,6 +61,7 @@ public class HeaderController {
     }
 
     @GetMapping("/most")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<HeaderDTO>> getAllHeaderWithTopTenEntry() {
         List<HeaderDTO> result = new ArrayList<>();
         for(Header header: headerService.getAllHeader()) {

@@ -1,8 +1,8 @@
 package com.blogapp.repository;
 
 import com.blogapp.entity.User;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

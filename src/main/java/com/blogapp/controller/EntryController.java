@@ -12,6 +12,7 @@ import com.blogapp.service.impl.EntryServiceImpl;
 import com.blogapp.service.impl.LikeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class EntryController {
     private LikeServiceImpl likeService;
 
     @PostMapping("/{id}/delete")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<EntryDTO> deleteEntry(@PathVariable(name = "id")Integer id) {
         EntryDTO entryDTO = entryDTOConverter.getEntryDTOFromEntry(entryService.getEntryById(id));
         entryService.deleteEntryById(entryService.getEntryById(id).getId());
@@ -43,6 +45,7 @@ public class EntryController {
     }
 
     @PostMapping("/{id}/update")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<EntryDTO> updateEntry(@RequestBody EntryDTO entryDTO,
                                                 @PathVariable(name = "id")Integer id) {
         entryDTO.setId(id);
@@ -51,26 +54,31 @@ public class EntryController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<EntryDTO>> getAllEntriesOfTheHeader(@RequestBody HeaderDTO headerDTO) {
         return ResponseEntity.ok(entryDTOConverter.getListOfEntryDTOFromListOfEntry(entryService.findEntriesByHeader(headerDTOConverter.getHeaderFromHeaderDTO(headerDTO))));
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<EntryDTO> getEntry(@PathVariable(name = "id") Integer id) {
         return ResponseEntity.ok(entryDTOConverter.getEntryDTOFromEntry(entryService.getEntryById(id)));
     }
 
     @GetMapping("/last")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<EntryDTO>> getLastTenEntry() {
         return ResponseEntity.ok(entryDTOConverter.getListOfEntryDTOFromListOfEntry(entryService.getLastTenEntries()));
     }
 
     @GetMapping("/most")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<EntryDTO>> getTopTenEntryAccordingToLike() {
         return ResponseEntity.ok(entryDTOConverter.getListOfEntryDTOFromListOfEntry(entryService.getTopTenEntryWithMostLikes()));
     }
 
     @PostMapping("{id}/like")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<LikeDTO> likeEntry(@PathVariable(name = "id") Integer id,
                                              @RequestBody LikeDTO likeDTO) {
         Like like = likeDTOConverter.getLikeFromLikeDTO(likeDTO);
@@ -82,6 +90,7 @@ public class EntryController {
     }
 
     @PostMapping("{id}/unlike")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<LikeDTO> unlikeEntry(@PathVariable(name = "id") Integer id,
                                                @RequestBody LikeDTO likeDTO) {
         Like like = likeDTOConverter.getLikeFromLikeDTO(likeDTO);
